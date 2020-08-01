@@ -28,10 +28,13 @@ const main = async() => {
     let page = 1;
 
     while (true) {
+      let request = new Date();
       console.log(`Getting page ${page}`);
-
       const response = await axios.get(`https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests?page=${page}`);
+      console.log('Page complete %dms', new Date() - request);
 
+      let insert = new Date();
+      console.log('Insert into db');
       const insertSql = `INSERT INTO motdata
     (registration, make, model, date, result, reason, type)
     VALUES (?, ?, ?, ?, ?, ?, ?)`;
@@ -61,6 +64,7 @@ const main = async() => {
           }
         }
       }
+      console.log('Db Insert complete %dms', new Date() - insert);
       page++;
     }
   } catch (e) {
