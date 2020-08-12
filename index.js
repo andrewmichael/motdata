@@ -10,6 +10,8 @@ const moment = require('moment');
 const db_name = path.join(__dirname, 'db', `motdata.db`);
 const db = new database(db_name, {error: console.log});
 
+axios.defaults.timeout = 10000
+
 program
   .option('--api [api key]', 'api key')
   .option('--create', 'creates the db structure')
@@ -53,7 +55,7 @@ const mainGetAll = async() => {
       console.log(`Start get page ${page}`);
       const response = await retry(async (bail, iteration) => {
         try {
-          return await axios.get(`https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests?page=${page}`);
+          return await axios.get(`https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests?page=${page}`, );
         } catch (error) {
           if (error.response && error.response.status && error.response.status === 404) {
             console.log(`Page ${page} not found`);
