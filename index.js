@@ -121,6 +121,8 @@ const mainGetAll = async() => {
         processing = false;
         console.log(`End`)
       }
+
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
   } catch (e) {
     console.log(e.message);
@@ -194,7 +196,7 @@ const mainGetDate = async() => {
 
       console.log(`End insert into db ${vehiclesMots.length}`);
 
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      await new Promise(resolve => setTimeout(resolve, 6000));
     }
   } catch (e) {
     console.log(e);
