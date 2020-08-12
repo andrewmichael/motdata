@@ -33,7 +33,7 @@ const mainCreateDb = async() => {
     create.run();
 
     const sql_create_index = `CREATE INDEX idx_reg_date_result
-    ON motdata (registration, date);`;
+    ON motdata (registration, date, result);`;
     const index = db.prepare(sql_create_index);
     index.run();
 
@@ -132,7 +132,6 @@ const mainGetDate = async() => {
 
   try {
     for (const page of pages) {
-
       console.log(`Start get page ${page} date ${program.getdate}`);
       const response = await retry(async (bail, iteration) => {
         try {
@@ -156,10 +155,6 @@ const mainGetDate = async() => {
       const insertSql = `INSERT INTO motdata
       (registration, make, model, date, result, reason, type)
       VALUES (@registration, @make, @model, @date, @result, @reason, @type)`;
-
-      const selectSql = `SELECT *
-      FROM motdata
-      WHERE registration `
 
       const insert = db.prepare(insertSql);
       const insertMany = db.transaction((mots) => {
@@ -198,6 +193,8 @@ const mainGetDate = async() => {
       insertMany(vehiclesMots);
 
       console.log(`End insert into db ${vehiclesMots.length}`);
+
+      await new Promise(resolve => setTimeout(resolve, 4000));
     }
   } catch (e) {
     console.log(e);
