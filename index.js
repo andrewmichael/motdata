@@ -10,7 +10,7 @@ const moment = require('moment');
 const db_name = path.join(__dirname, 'db', `motdata.db`);
 const db = new database(db_name, {error: console.log});
 
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 10000;
 
 program
   .option('--api [api key]', 'api key')
