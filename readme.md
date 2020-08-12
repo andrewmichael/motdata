@@ -1,9 +1,13 @@
-create a date time sqllite db in the db directory
+create sqllite db in the db directory
 
-run through each page from 1 to x, returns 404 when no more data 
+get all data by page page from 1 to x, returns 404 when no more data 
+
+get by date, filter by that date only and insert
 
 ```shell script
 node index --create 
 
 node index --api {{api key}} --getall
+
+node index --api {{api key}} --getdate yyyymmdd
 ```
