@@ -15,7 +15,7 @@ axios.defaults.timeout = 10000;
 program
   .option('--api [api key]', 'api key')
   .option('--create', 'creates the db structure')
-  .option('--getall', 'gets all the data')
+  .option('--getall [start page]', 'gets all the data')
   .option('--getdate [date]', 'get mots on a date')
   .parse(process.argv);
 
@@ -47,7 +47,7 @@ const mainCreateDb = async() => {
 
 const mainGetAll = async() => {
   try {
-    let page= 0;
+    let page = program.getall;
     let processing = true;
     let empty = 0;
 
