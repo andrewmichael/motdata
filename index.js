@@ -8,19 +8,19 @@ const axios = require('axios');
 const moment = require('moment');
 
 const db_name = path.join(__dirname, 'db', `motdata.db`);
-const db = new database(db_name, {error: console.log});
+const db = new database(db_name, { error: console.log });
 
 axios.defaults.timeout = 10000;
 
 program
   .option('--api [api key]', 'api key')
   .option('--create', 'creates the db structure')
-  .option('--getall [start page]', 'gets all the data')
+  .option('--getall [start page]', 'gets all the data from start page')
   .option('--getdate [date]', 'get mots on a date')
   .parse(process.argv);
 
-const mainCreateDb = async() => {
-  try{
+const mainCreateDb = async () => {
+  try {
     const sql_create_table = `CREATE TABLE IF NOT EXISTS motdata (
         registration TEXT,
         make TEXT,
@@ -45,7 +45,7 @@ const mainCreateDb = async() => {
   }
 }
 
-const mainGetAll = async() => {
+const mainGetAll = async () => {
   try {
     let page = program.getall;
     let processing = true;
@@ -55,14 +55,15 @@ const mainGetAll = async() => {
       console.log(`Start get page ${page}`);
       const response = await retry(async (bail, iteration) => {
         try {
-          return await axios.get(`https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests?page=${page}`, );
+          return await axios.get(`https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests?page=${page}`,);
         } catch (error) {
           if (error.response && error.response.status && error.response.status === 404) {
             console.log(`Page ${page} not found`);
-            return{data: [], empty: true};
+            return { data: [], empty: true };
           }
           throw error;
-        }}, {
+        }
+      }, {
         retries: 5,
         onRetry: (error) => {
           console.log(`an error occured ${error}`);
@@ -119,7 +120,7 @@ const mainGetAll = async() => {
       console.log(`End insert into db ${vehiclesMots.length}`);
       page++;
 
-      if (empty >5) {
+      if (empty > 5) {
         processing = false;
         console.log(`End`)
       }
@@ -131,7 +132,7 @@ const mainGetAll = async() => {
   }
 };
 
-const mainGetDate = async() => {
+const mainGetDate = async () => {
   const pages = [...Array(1440).keys()];
 
   try {
@@ -143,10 +144,11 @@ const mainGetDate = async() => {
         } catch (error) {
           if (error.response && error.response.status && error.response.status === 404) {
             console.log(`Page ${page} not found`);
-            return {data: []};
+            return { data: [] };
           }
           throw error;
-        }}, {
+        }
+      }, {
         retries: 5,
         onRetry: (error) => {
           console.log(`an error occured ${error}`);
