@@ -11,3 +11,5 @@ node index --api {{api key}} --getall
 
 node index --api {{api key}} --getdate yyyymmdd
 ```
+
+node js 12x

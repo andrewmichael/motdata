@@ -124,7 +124,7 @@ const mainGetAll = async() => {
         console.log(`End`)
       }
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 4000));
     }
   } catch (e) {
     console.log(e.message);
